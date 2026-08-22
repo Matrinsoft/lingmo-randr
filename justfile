@@ -28,7 +28,12 @@ build-debug *args:
 build-release *args: (build-debug '--release' args)
 
 # Compile with a vendored tarball
-build-vendored *args: vendor-extract (build-release '--frozen --offline' args)
+build-vendored *args:
+    vendor-extract
+    cp Cargo.toml Cargo.toml.bak
+    sed -i '/^\[patch/,/^$/d' Cargo.toml
+    cargo build --release {{ args }} --frozen --offline
+    mv Cargo.toml.bak Cargo.toml
 
 # Check for errors and linter warnings
 check *args:
@@ -48,10 +53,8 @@ test:
 # Vendor Cargo dependencies locally
 vendor:
     mkdir -p .cargo
-    cargo vendor --sync Cargo.toml \
-        | head -n -1 > .cargo/config
-    echo 'directory = "vendor"' >> .cargo/config
-    tar pcf vendor.tar vendor
+    cargo vendor --sync Cargo.toml 2>/dev/null | awk '/^\[/{p=1} p' > .cargo/config
+    tar pcf vendor.tar vendor .cargo/config
     rm -rf vendor
 
 # Extracts vendored dependencies
