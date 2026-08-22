@@ -135,7 +135,7 @@ checksum = "b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75"
 [[package]]
 name = "cosmic-protocols"
 version = "0.1.0"
-source = "git+https://github.com/Matrinsoft/lingmo-protocols.git#d0e95be25e423cfe523b11111a3666ed7aaf0dc4"
+source = "git+https://github.com/Matrinsoft/lingmo-protocols.git#bc41a9a7ee55043ee90689d47ce110292996072e"
 dependencies = [
  "bitflags",
  "wayland-backend",
